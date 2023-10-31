@@ -10,9 +10,9 @@ import python_aliexpress_api as aliexpress_api
 
 from main import APP_SECRET 
 
-TOKEN = '6822634998:AAGmY_7F372gOUzadzqc_VE8tRDnmnMU-Sc'
-APP_KEY = '502588'
-APP_SECRET = 'v9vOxRrzy9BKJ5lS80s9Hgfneaz1uW7S'
+TOKEN = ''
+APP_KEY = ''
+APP_SECRET = ''
 ali_obj = aliexpress_api.Aliexpress(APP_KEY, APP_SECRET)  # initializing API
 
 bot = telebot.TeleBot(TOKEN)
