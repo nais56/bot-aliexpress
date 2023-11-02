@@ -4,10 +4,10 @@ from aliexpress_api_client import AliExpress
 from link_handler import get_link
 
 #Initialize aliexpress api client
-aliexpress = AliExpress('502588', 'v9vOxRrzy9BKJ5lS80s9Hgfneaz1uW7S')
+aliexpress = AliExpress('app key', 'app secrity')
 
 # Initialize TeleBot
-bot = telebot.TeleBot("6822634998:AAHXLkZf_peg3ZG0SS5Qwo7X0ChO4PYQ9PE")
+bot = telebot.TeleBot("token")
 
 @bot.message_handler(commands=["start"])
 def start(message):
