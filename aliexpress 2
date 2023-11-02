@@ -1,0 +1,61 @@
+import time
+import telebot
+from aliexpress_api_client import AliExpress
+from link_handler import get_link
+
+#Initialize aliexpress api client
+aliexpress = AliExpress('502588', 'v9vOxRrzy9BKJ5lS80s9Hgfneaz1uW7S')
+
+# Initialize TeleBot
+bot = telebot.TeleBot("6822634998:AAHXLkZf_peg3ZG0SS5Qwo7X0ChO4PYQ9PE")
+
+@bot.message_handler(commands=["start"])
+def start(message):
+    bot.send_message(message.chat.id, "Welcome to the currency discount bot! Send the product link and get the discount link.")
+
+@bot.message_handler(content_types=["text"])
+def search(message):
+    # Get the text from the user
+    text = message.text
+
+    # Get the link from the text
+    link = get_link(text)
+
+    # Define fields
+    fields = ['productName', 'volume', 'evaluateScore', 'discount', 'salePrice', 'productUrl']
+
+    # Search for the product using Aliexpress API
+    results = aliexpress.get_product_list(link, 0, fields)
+
+    if len(results['products']) == 0:
+        bot.send_message(message.chat.id,"No products were found with that name")
+    else:
+        for result in results['products']:
+            response_message = """
+            🛍️ Product Information 🛍️
+            Product Name : {productName}
+            Number of Product sales : {sells}
+            Positive Product Rating : {positiveRate}
+            Product Discount Rate : {discount}
+
+            🔗 Product links Information 🔗
+            Current (Original) Price : {current_price}
+
+            Product Link : {product_url}
+            """.format(
+                productName=result["productName"],
+                sells=result["volume"],
+                positiveRate=result["evaluateScore"],
+                discount=result["discount"],
+                current_price=result["salePrice"],
+                product_url=result["productUrl"]
+            )
+            bot.send_message(message.chat.id, response_message)
+
+while True:
+    try: 
+        print('Polling...')
+        bot.polling(none_stop=True)
+    except Exception as e:
+        print(e)
+        time.sleep(15)
